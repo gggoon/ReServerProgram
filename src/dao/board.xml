@@ -5,8 +5,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="dao.board">
 
+   <select id="selectBoardList" resultType="dto.BoardDTO">
+      SELECT no, title, author, postdate, grade
+        FROM board
+       ORDER BY no desc 
+   </select>
    
-   
+  
+   <select id="selectBoardMaxHitJob" resultType="dto.board">
+          SELECT a.no, a.title, a.contant, a.hit
+            FROM (SELECT no, title, content, hit
+                    FROM board
+                   ORDER BY no DESC) a
+  </select>
 </mapper>
 
 

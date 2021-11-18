@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.ModelAndView;
+import model.BoardListService;
 import model.BoardService;
 
 
@@ -32,10 +33,14 @@ public class BoardController extends HttpServlet {
 		ModelAndView mav = null;
 		BoardService service = null;
 		switch (command) {
-		   
+		case "selectBoardList.do":
+			service = new BoardListService();
+			break;
+		case "insertForm.do":
+	    mav = new ModelAndView("views/insertBoardForm.jsp",false);
+		
 		}
-		
-		
+
 		
 		
 		

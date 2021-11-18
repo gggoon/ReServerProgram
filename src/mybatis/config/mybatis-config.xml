@@ -22,6 +22,3 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</mappers>
 	
 </configuration>
-<!-- DROP USER SCOTT CASCADE;
-CREATE USER SCOTT IDENTIFIED BY 1111;
-GRANT DBA TO SCOTT;  -->

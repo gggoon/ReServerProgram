@@ -44,6 +44,8 @@ public class BoardListener implements ServletContextListener {
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
+    
+    
     public void contextInitialized(ServletContextEvent arg0)  { 
     	try {
     		JobDetail job = JobBuilder.newJob(SelectBoardMaxHitJob.class)

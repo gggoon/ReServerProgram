@@ -3,48 +3,58 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="dao.board">
+<mapper namespace="dao.board">   
+   
+   
+      <!-- 1. 제품 목록 -->
+   <select id="boardList" resultType="dto.BoardDTO">
+      SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
+        FROM BOARD
+   </select>
 
-   <select id="selectBoardList" resultType="dto.BoardDTO">
-      SELECT no, title, author, postdate, grade
-        FROM board
-       ORDER BY no desc 
+   <insert id="boardInsert" parameterType="dto.BoardDTO">
+      INSERT INTO BOARD VALUES (BOARD_SEQ.NEXTVAL, #{author}, #{title}, #{content}, 0, #{ip}, SYSDATE)
+   </insert>
+
+   <select id="boardselect" parameterType="Long" resultType="dto.BoardDTO">
+      SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
+        FROM BOARD
+       WHERE NO = #{no}
+   </select>
+
+   <insert id="insertReply" parameterType="dto.ReplyDTO">
+      INSERT INTO REPLY VALUES (REPLY_SEQ.NEXTVAL, #{author}, #{content}, #{ip}, #{board_no}, SYSDATE)
+   </insert>
+
+   <delete id="deleteBoard" parameterType="Long">
+      DELETE
+        FROM BOARD
+       WHERE NO = #{no}
+   </delete>
+   
+   <select id="selectTop" resultType="dto.BoardDTO">
+      SELECT A.NO, A.AUTHOR, A.TITLE, A.CONTENT, A.HIT, A.IP, A.POSTDATE
+        FROM (SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
+                FROM BOARD
+               ORDER BY AVE DESC) A
+       WHERE <![CDATA[ROWNUM <= 3]]>
    </select>
    
-  
-   <select id="selectBoardMaxHitJob" resultType="dto.board">
-          SELECT a.no, a.title, a.contant, a.hit
-            FROM (SELECT no, title, content, hit
-                    FROM board
-                   ORDER BY no DESC) a
-  </select>
+   <select id="selectReplyList" resultType="dto.ReplyDTO" parameterType="Long">
+      SELECT NO, AUTHOR, CONTENT, IP, BOARD_NO, POSTDATE
+        FROM REPLY
+       WHERE NO = #{no}
+   </select>
+   <insert id="insertReply" parameterType="dto.BoardDTO">
+       INSERT INTO reply
+       VALUES(reply_seq.nextval, #{author},#{content},#{ip},#{boardNo},SYSDATE)
+   </insert>
+   <select id="selectBoardByMaxHit" resultType="dto.BoardDTO">
+       SELECT a.title, a.content, a.hit
+         FROM (SELECT title, content, hit
+                 FROM board
+                ORDER BY hit DESC) a
+         WHERE ROWNUM = 1  
+   
+   </select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

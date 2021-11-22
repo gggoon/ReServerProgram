@@ -1,10 +1,5 @@
 package batch;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.List;
-
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -17,22 +12,12 @@ public class SelectBoardMaxHitJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-
-	List<BoardDTO> list = BoardDAO.getInstance().selectBoardMaxHitJob();
-	
-	File file = new File("MaxhitJob.txt");
-	try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
-	   for (BoardDTO board : list) {
+		   BoardDTO dto = BoardDAO.getInstance().selectBoardByMaxHit();
 		   System.out.println("====최대 초회수 게시글====");
-		   bw.write(board.getNo() + ",");
-		   bw.append(board.getTitle() + ",");
-		   bw.append(board.getContent() + ",");
-		   bw.append(board.getHit() + "\n");
+		   System.out.println("제목:" + dto.getTitle());
+		   System.out.println("내용:" + dto.getContent());
+		   System.out.println("조회수:" + dto.getHit());
+
 	   }
-	   System.out.println("MaxhitJob.txt 생성 완료");
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-}
 
 }

@@ -9,8 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import common.ModelAndView;
-import model.BoardListService;
 import model.BoardService;
+import model.DeleteBoardService;
+import model.InsertBoardService;
+import model.InsertReplyService;
+import model.SelectBoardByNoService;
+import model.SelectBoardListService;
+import model.UpdateBoardHitService;
 
 
 @WebServlet("*.do") 
@@ -23,30 +28,40 @@ public class BoardController extends HttpServlet {
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	   
-		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		
-		String requestURI = request.getRequestURI();                     
-		String contextPath = request.getContextPath();                   
-		String command = requestURI.substring(contextPath.length() + 1); 
+		String[] arr = request.getRequestURI().split("/");
+		String command = arr[arr.length - 1];
 		
 		ModelAndView mav = null;
 		BoardService service = null;
+
 		switch (command) {
 		case "selectBoardList.do":
-			service = new BoardListService();
-			break;
-		case "insertForm.do":
-	    mav = new ModelAndView("views/insertBoardForm.jsp",false);
-		
+		      service = new SelectBoardListService();
+ 		      break;
+		case "selectBoardByNo.do":
+	          service = new SelectBoardByNoService();
+		      break;
+		case "insertBoardForm.do":
+			  mav = new ModelAndView("view/insertBoard.jsp",false);
+			  break;
+		case "insertBoard.do":
+			  service = new InsertBoardService();
+			  break;
+		case "deleteBoard.do":
+			  service = new DeleteBoardService();
+			  break;
+		case "updateBoardHit.do":
+			  service = new UpdateBoardHitService();
+			  break;
+		case "insertReply.do":
+			  service = new InsertReplyService();
+			  break;
 		}
-
 		
-		
-		
-		
-		
-			if (service != null) {
+		if (service != null) {
 				try {
 					mav = service.execute(request, response);
 				} catch (Exception e) {

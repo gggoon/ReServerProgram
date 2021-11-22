@@ -1,6 +1,6 @@
  DROP TABLE REPLY;
 
-    DROP TABLE BOARD;
+  DROP TABLE BOARD;
 
     -- 게시판 테이블
 

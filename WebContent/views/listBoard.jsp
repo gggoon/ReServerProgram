@@ -8,11 +8,10 @@
     <title>listBoard.jsp</title>
 </head>
 <body>
-   <div>
-      <a href="/ReServerProgram/selectBoardList.do">새글 작성하기</a>
-   </div>
-   <table border="1">
-       <caption>전체 게시글 : ${totalCount}개</caption>
+       <a href="insertBoardForm.do">새글작성</a>
+       
+       전체 게시글 : ${totalRecord}개<br>
+       <table border="1">
        <thead>
            <tr>
               <td>글번호</td>
@@ -23,16 +22,21 @@
            </tr>           
        </thead>
        <tbody>
-           <c:forEach items="${list}" var="board">
+           <c:if test="${empty list}">
+           <tr> 
+               <td colspan="5">작성된 게시글이 없습니다.</td>
+           </c:if>
+           <c:if test="${not empty list}">  
+           <c:forEach items="${list}" var="dto">
                 <tr>
-                  <td>${board.no}</td>
-                  <td>${board.title}</td>
-                  <td>${board.author}</td>
-                  <td>${board.postdate}</td>
-                  <td>${board.hit}</td>
+                  <td>${dto.no}</td>
+                  <td><a href="selectBoardByNo.do?no=${dto.no}">${dto.title}</a></td>
+                  <td>${dto.author}</td>
+                  <td>${dto.postdate}</td>
+                  <td>${dto.hit}</td>
                 </tr>
            </c:forEach>
-          
+          </c:if>
        </tbody>
    </table>
 </body>

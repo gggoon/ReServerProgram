@@ -16,10 +16,6 @@ import org.quartz.impl.StdSchedulerFactory;
 public class BoardListener implements ServletContextListener {
 
 	private Scheduler scheduler;
-	
-    /**
-     * Default constructor. 
-     */
     public BoardListener() {
     	 try {
       	   scheduler = new StdSchedulerFactory().getScheduler();
@@ -27,10 +23,7 @@ public class BoardListener implements ServletContextListener {
       	   e.printStackTrace();
   	  }
     }
-
-	/**
-     * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     */
+    
     public void contextDestroyed(ServletContextEvent arg0)  { 
     	try {
         	if (scheduler != null) {
@@ -40,25 +33,17 @@ public class BoardListener implements ServletContextListener {
         		e.printStackTrace();
     		}
     }
-
-	/**
-     * @see ServletContextListener#contextInitialized(ServletContextEvent)
-     */
-    
-    
     public void contextInitialized(ServletContextEvent arg0)  { 
     	try {
     		JobDetail job = JobBuilder.newJob(SelectBoardMaxHitJob.class)
-    				.withIdentity("job", "group")
+    				.withIdentity("job1", "group1")
     				.build();
     		
     		Trigger trigger = TriggerBuilder.newTrigger()
-    				.withIdentity("trigger", "group")
-    				.withSchedule(CronScheduleBuilder.cronSchedule(""))
+    				.withIdentity("trigger1", "group1")
+    				.withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * 1/1 * ? * * "))
     				.build();
-    		
     		scheduler.scheduleJob(job, trigger);
-    		
     		scheduler.start();
     	} catch (Exception e) {
     		e.printStackTrace();

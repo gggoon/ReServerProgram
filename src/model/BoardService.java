@@ -9,7 +9,7 @@ import common.ModelAndView;
 
 public interface BoardService {
 
-	public ModelAndView execute(HttpServletRequest request,HttpServletResponse response) throws IOException;
+	public ModelAndView execute(HttpServletRequest request,HttpServletResponse response) throws Exception;
 	
 	
 	

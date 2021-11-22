@@ -24,17 +24,28 @@ public class BoardDAO {
    }
    
    
-   public List<BoardDTO> boardList() {
+   public List<BoardDTO> selectBoardList() {
       SqlSession ss = factory.openSession();
-      List<BoardDTO> list = ss.selectList("dao.board.boardList");
+      List<BoardDTO> list = ss.selectList("dao.board.selectBoardList");
       ss.close();
       return list;
    }
+   public int getTotalBoardCount() {
+	   SqlSession ss = factory.openSession();
+	   int count = ss.selectOne("dao.board.getTotalBoardCount");
+	   ss.close();
+	   return count;
+   }
+   public int selectBoardByNo(Long no) {
+	   SqlSession ss = factory.openSession();
+	   int count = ss.selectOne("dao.board.selectBoardByNo", no);
+	   ss.close();
+	   return count;
+   }
    
-   
-   public int boardInsert(BoardDTO board) {
+   public int insertBoard(BoardDTO dto) {
       SqlSession ss = factory.openSession(false);
-      int result = ss.insert("dao.board.boardInsert", board);
+      int result = ss.insert("dao.board.insertBoard", dto);
       if (result > 0) {
          ss.commit();
       }
@@ -49,9 +60,9 @@ public class BoardDAO {
       return board;
    }
    
-   public int insertReply(ReplyDTO reply) {
+   public int insertBoard(ReplyDTO reply) {
       SqlSession ss = factory.openSession(false);
-      int result = ss.insert("dao.board.insertReply", reply);
+      int result = ss.insert("dao.board.insertBoard", reply);
       if (result > 0) {
          ss.commit();
       }
@@ -69,19 +80,37 @@ public class BoardDAO {
       return result;
    }
    
-   public List<BoardDTO> selectTop() {
-      SqlSession ss = factory.openSession();
-      List<BoardDTO> top = ss.selectList("dao.board.selectTop");
-      ss.close();
-      return top;
+   public boolean checkReply(Long no) {
+	   SqlSession ss = factory.openSession(false);
+	   ReplyDTO dto = ss.selectOne("dao.board.checkReply", no);
+	   ss.close();
+	   return dto == null;
    }
    
-   public List<ReplyDTO> selectReplyList(Long no) {
+   public int updateBoardHit(Long no) {
+	   SqlSession ss = factory.openSession(false);
+	   int result = ss.update("dao.board.updateBoardHit", no);
+	   if (result > 0) ss.commit();
+	   ss.close();
+	   return result;
+   }
+   
+   public List<ReplyDTO> selectReplyList(Long board_no) {
       SqlSession ss = factory.openSession();
-      List<ReplyDTO> list = ss.selectList("dao.board.selectReplyList", no);
+      List<ReplyDTO> list = ss.selectList("dao.board.selectReplyList", board_no);
       ss.close();
       return list;
    }
+   
+   public int insertReply(ReplyDTO dto) {
+	   SqlSession ss = factory.openSession(false);
+	   int result = ss.insert("dao.board.insertReply", dto);
+	   if (result > 0) ss.commit();
+	   ss.close();
+	   return result;
+   }
+   
+   
    public BoardDTO selectBoardByMaxHit() {
 	   SqlSession ss = factory.openSession();
 	   BoardDTO dto = ss.selectOne("dao.board.selectBoardByMaxHit");

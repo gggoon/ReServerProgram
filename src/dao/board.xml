@@ -6,24 +6,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="dao.board">   
    
    
-      <!-- 1. 제품 목록 -->
-   <select id="boardList" resultType="dto.BoardDTO">
+     
+   <select id="selectBoardList" resultType="dto.BoardDTO">
       SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
+        FROM BOARD
+        ORDER BY NO DESC
+   </select>
+
+   <select id="getTotalBoardCount" resultType="int">
+      SELECT COUNT(*)
         FROM BOARD
    </select>
 
-   <insert id="boardInsert" parameterType="dto.BoardDTO">
-      INSERT INTO BOARD VALUES (BOARD_SEQ.NEXTVAL, #{author}, #{title}, #{content}, 0, #{ip}, SYSDATE)
-   </insert>
-
-   <select id="boardselect" parameterType="Long" resultType="dto.BoardDTO">
+   <select id="selectBoardByNo" parameterType="Long" resultType="dto.BoardDTO">
       SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
         FROM BOARD
        WHERE NO = #{no}
    </select>
 
-   <insert id="insertReply" parameterType="dto.ReplyDTO">
-      INSERT INTO REPLY VALUES (REPLY_SEQ.NEXTVAL, #{author}, #{content}, #{ip}, #{board_no}, SYSDATE)
+   <insert id="insertBoard" parameterType="dto.BoardDTO">
+      INSERT INTO board
+        VALUES(board_seq.nextval, #{author}, #{title}, #{content} ,0, #{ip} SYSDATE)
    </insert>
 
    <delete id="deleteBoard" parameterType="Long">
@@ -32,13 +35,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        WHERE NO = #{no}
    </delete>
    
-   <select id="selectTop" resultType="dto.BoardDTO">
-      SELECT A.NO, A.AUTHOR, A.TITLE, A.CONTENT, A.HIT, A.IP, A.POSTDATE
-        FROM (SELECT NO, AUTHOR, TITLE, CONTENT, HIT, IP, POSTDATE
-                FROM BOARD
-               ORDER BY AVE DESC) A
-       WHERE <![CDATA[ROWNUM <= 3]]>
+   <select id="checkReply" parameterType="Long" resultType="dto.ReplyDTO">
+      SELECT NO
+        FROM REPLY
+       WHERE BOARD_NO = #{no}
    </select>
+   <update id="updateBoardHit" parameterType="Long">
+       UPDATE board
+          SET hit = hit + 1
+         WHERE no = #{no}
+   </update>
    
    <select id="selectReplyList" resultType="dto.ReplyDTO" parameterType="Long">
       SELECT NO, AUTHOR, CONTENT, IP, BOARD_NO, POSTDATE

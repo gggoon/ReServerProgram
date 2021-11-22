@@ -24,7 +24,7 @@ public class InsertReplyService implements BoardService {
 		dto.setContent(content);
 		dto.setIp(ip);
 		dto.setBoardNo(boardNo);
-		int result = BoardDAO.getInstance().insertBoard(dto);
+		int result = BoardDAO.getInstance().insertReply(dto);
 		PrintWriter out = response.getWriter();
 		if (result > 0) {
 			out.println("<script>");

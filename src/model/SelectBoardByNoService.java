@@ -14,7 +14,7 @@ public class SelectBoardByNoService implements BoardService {
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		long no = Long.parseLong(request.getSession());
+		long no = Long.parseLong(request.getParameter("no"));
 		HttpSession session = request.getSession();
 		if (session.getAttribute("open") == null) {
 			BoardDAO.getInstance().updateBoardHit(no);

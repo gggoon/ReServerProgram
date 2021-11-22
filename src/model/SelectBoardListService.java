@@ -21,7 +21,6 @@ public class SelectBoardListService implements BoardService {
 		request.setAttribute("totalRecord", BoardDAO.getInstance().getTotalBoardCount());
 		return new ModelAndView("views/listBoard.jsp", false);
 		
-		return null;
 	}
 
 }
